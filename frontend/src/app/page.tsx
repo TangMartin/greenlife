@@ -1,101 +1,344 @@
-import Image from "next/image";
+import { HomeHeader } from "@/components/HomeHeader";
+import { SideNav } from "@/components/SideNav";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  CheckIcon
+} from '@radix-ui/react-icons';
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Heading,
+  Table,
+  Text
+} from '@radix-ui/themes';
+import { Marker } from './Marker';
 
-export default function Home() {
+export default async function Home() {
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="flex h-screen">
+      <SideNav />
+      <div className="flex flex-col flex-1 overflow-y-scroll no-scrollbar m-10">
+        <HomeHeader />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="mt-8">
+          <Heading className="mb-4">
+            Metrics
+          </Heading>
+          <Grid columns="3" gap="5" className="ml-4">
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  MRR
+                </Text>
+                <Badge color="teal" radius="full">
+                  <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
+                  3.2%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                $350K
+              </Text>
+            </Box>
+
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  OpEx
+                </Text>
+                <Badge color="red" radius="full">
+                  <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
+                  12.8%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                $211K
+              </Text>
+            </Box>
+
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  CapEx
+                </Text>
+                <Badge color="teal" radius="full">
+                  <ArrowDownIcon width="12" height="12" style={{ marginLeft: -2 }} />
+                  8.8%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                $94K
+              </Text>
+            </Box>
+
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  GPM
+                </Text>
+                <Badge color="red" radius="full">
+                  <ArrowDownIcon width="12" height="12" style={{ marginLeft: -2 }} />
+                  1.2%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                44.6%
+              </Text>
+            </Box>
+
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  NPM
+                </Text>
+                <Badge color="gray" variant="surface" radius="full">
+                  0.0%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                9.1%
+              </Text>
+            </Box>
+
+            <Box>
+              <Flex gap="2" mb="2" align="center">
+                <Text size="2" color="gray">
+                  EBITDA
+                </Text>
+                <Badge color="teal" radius="full">
+                  <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
+                  4.1%
+                </Badge>
+              </Flex>
+              <Text as="div" mb="2" size="8" weight="bold">
+                $443K
+              </Text>
+            </Box>
+          </Grid>
+
+          <Heading className="mt-8 mb-4">
+            Database
+          </Heading>
+          <Table.Root>
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeaderCell>Full name</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Group</Table.ColumnHeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              <Table.Row>
+                <Table.RowHeaderCell>Danilo Sousa</Table.RowHeaderCell>
+                <Table.Cell>danilo@example.com</Table.Cell>
+                <Table.Cell>Developer</Table.Cell>
+              </Table.Row>
+
+              <Table.Row>
+                <Table.RowHeaderCell>Zahra Ambessa</Table.RowHeaderCell>
+                <Table.Cell>zahra@example.com</Table.Cell>
+                <Table.Cell>Admin</Table.Cell>
+              </Table.Row>
+
+              <Table.Row>
+                <Table.RowHeaderCell>Jasper Eriksson</Table.RowHeaderCell>
+                <Table.Cell>jasper@example.com</Table.Cell>
+                <Table.Cell>Developer</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table.Root>
+
+          <Card size="4">
+          <Heading as="h3" size="6" trim="start" mb="2">
+            Pricing
+          </Heading>
+
+          <Text as="p" size="2" mb="5" color="gray">
+            No credit card required. Every plan includes a 30-day trial of all Pro features.
+          </Text>
+
+          <Grid columns="3" gap="6">
+            <Flex direction="column">
+              <Text weight="bold" size="5" mb="1">
+                Basic
+              </Text>
+              <Text color="gray" size="2" mb="4">
+                3 team members
+              </Text>
+              <Text weight="bold" size="5" mb="4">
+                $0
+                <Text size="5" weight="bold" style={{ color: 'var(--gray-a8)' }}>
+                  {' / mo'}
+                </Text>
+              </Text>
+
+              <Flex direction="column" gap="2">
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Expense tracking</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Invoicing</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Payment tracking</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Transaction recording</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Basic reports</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Email support</Text>
+                </Flex>
+                <Button mt="3" variant="outline">
+                  Downgrade
+                </Button>
+              </Flex>
+            </Flex>
+
+            <Flex direction="column">
+              <Text weight="bold" size="5" mb="1">
+                Growth
+              </Text>
+              <Text color="gray" size="2" mb="4">
+                10 team members
+              </Text>
+              <Text weight="bold" size="5" mb="4">
+                $49
+                <Text size="5" weight="bold" style={{ color: 'var(--gray-a8)' }}>
+                  {' / mo'}
+                </Text>
+              </Text>
+
+              <Flex direction="column" gap="2">
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Online payments</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Recurring invoices</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Bill management</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Inventory tracking</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Detailed reports</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Phone support</Text>
+                </Flex>
+                <Button mt="3" variant="outline">
+                  Go to Billing
+                </Button>
+              </Flex>
+            </Flex>
+
+            <Flex direction="column">
+              <Text weight="bold" size="5" mb="1">
+                Pro
+              </Text>
+              <Text color="gray" size="2" mb="4">
+                Unlimited team members
+              </Text>
+              <Text weight="bold" size="5" mb="4">
+                $99
+                <Text size="5" weight="bold" style={{ color: 'var(--gray-a8)' }}>
+                  {' / mo'}
+                </Text>
+              </Text>
+
+              <Flex direction="column" gap="2">
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Custom invoices</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Multi-business</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Team collaboration</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">App integrations</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Advanced security</Text>
+                </Flex>
+                <Flex gap="2" align="center">
+                  <Marker>
+                    <CheckIcon width="14" height="14" />
+                  </Marker>
+                  <Text size="2">Priority support</Text>
+                </Flex>
+                <Button mt="3">
+                  Upgrade
+                </Button>
+              </Flex>
+            </Flex>
+          </Grid>
+        </Card>
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
