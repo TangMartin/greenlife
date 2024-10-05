@@ -34,27 +34,27 @@ export default async function Home() {
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  MRR
+                  Number of programs we have
                 </Text>
-                <Badge color="teal" radius="full">
+                {/* <Badge color="teal" radius="full">
                   <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
                   3.2%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
-                $350K
+                150
               </Text>
             </Box>
 
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  OpEx
+                  Total Funding Available
                 </Text>
-                <Badge color="red" radius="full">
+                {/* <Badge color="red" radius="full">
                   <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
                   12.8%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
                 $211K
@@ -79,29 +79,29 @@ export default async function Home() {
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  GPM
+                  Application success rate
                 </Text>
-                <Badge color="red" radius="full">
+                {/* <Badge color="red" radius="full">
                   <ArrowDownIcon width="12" height="12" style={{ marginLeft: -2 }} />
                   1.2%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
-                44.6%
+                70%
               </Text>
             </Box>
 
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  NPM
+                  Number of Participants so far
                 </Text>
-                <Badge color="gray" variant="surface" radius="full">
+                {/* <Badge color="gray" variant="surface" radius="full">
                   0.0%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
-                9.1%
+                2000
               </Text>
             </Box>
 
