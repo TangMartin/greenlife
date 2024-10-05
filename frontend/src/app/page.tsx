@@ -64,12 +64,12 @@ export default async function Home() {
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  CapEx
+                  Funding Allocated so far
                 </Text>
-                <Badge color="teal" radius="full">
+                {/* <Badge color="teal" radius="full">
                   <ArrowDownIcon width="12" height="12" style={{ marginLeft: -2 }} />
                   8.8%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
                 $94K
@@ -101,22 +101,22 @@ export default async function Home() {
                 </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
-                2000
+                100
               </Text>
             </Box>
 
             <Box>
               <Flex gap="2" mb="2" align="center">
                 <Text size="2" color="gray">
-                  EBITDA
+                  Average Funding per participant
                 </Text>
-                <Badge color="teal" radius="full">
+                {/* <Badge color="teal" radius="full">
                   <ArrowUpIcon width="12" height="12" style={{ marginLeft: -2 }} />
                   4.1%
-                </Badge>
+                </Badge> */}
               </Flex>
               <Text as="div" mb="2" size="8" weight="bold">
-                $443K
+                $1k
               </Text>
             </Box>
           </Grid>
