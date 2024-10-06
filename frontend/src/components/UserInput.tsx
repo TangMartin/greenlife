@@ -1,15 +1,56 @@
 "use client"
-import { PersonIcon } from "@radix-ui/react-icons";
+import { Marker } from "@/app/Marker";
+import { CheckIcon, PersonIcon } from "@radix-ui/react-icons";
 import { Box, Button, Card, Checkbox, Flex, Grid, Heading, Switch, Text, TextArea, TextField } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
+// Updated fetchPricingData function
+
+const fetchPricingData = async (userData) => {
+    try {
+        // Dynamically construct the question using userData
+
+        const question = `As a homeowner in BC, I want to know three programs that I am eligible for with the following information {name: ${userData.name}, city: ${userData.city}, email: ${userData.email}, issueAreas: ${JSON.stringify(userData.issueAreas)}, issueDetails: ${userData.issueDetails}} while saving some money for the effort. Format the response as a JSON file with the following items: program_name, organization, description, type_of_program, sectors, date_of_update, maximum_rebate, Link(url), eligibility criteria (array of 5). All responses returned must be in JSON format. The answer returned should be a JSON example like the example provided: { programs: [{ program_name: '', organization: '', description: '', type_of_program: '', sectors: ['', ''], date_of_update: '', maximum_rebate: 0, Link: ''] }] }. Do not say 'based on the information provided, here are three relevant programs you may be eligible for. The Link should be a url from the source you are gathering information from'`;
+        console.log(question)
+
+        const response = await axios.post('https://rw1dudosqj.execute-api.us-west-2.amazonaws.com/prod/lambdaBedrockProd', {
+            question: question
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Response Data:', response.data);
+
+        // Parse the response data if it's a string
+        let parsedData;
+        if (typeof response.data === 'string') {
+            parsedData = JSON.parse(response.data);
+        } else {
+            parsedData = response.data;
+        }
+
+        return parsedData;
+    } catch (error) {
+        console.error('Error fetching pricing data:', error);
+        return null;
+    }
+};
+
+
 
 export function UserInput() {
     const [showUserForm, setShowUserForm] = useState(false);
     const [name, setName] = useState('Vlad Moroz');
-    const [city, setcity] = useState('Vancouver');
+    const [city, setCity] = useState('Vancouver');
     const [email, setEmail] = useState('hi@vladmoroz.com');
+    const [data, setData] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [fetchTrigger, setFetchTrigger] = useState(0);
 
-    // New state for issue areas
     const [issueAreas, setIssueAreas] = useState({
         Residential: false,
         Commercial: false,
@@ -20,25 +61,55 @@ export function UserInput() {
     });
     const [issueDetails, setIssueDetails] = useState('');
 
+    useEffect(() => {
+        if (fetchTrigger > 0) {
+            const userData = {
+                name,
+                city,
+                email,
+                issueAreas,
+                issueDetails
+            };
+
+            setLoading(true);
+            setError(null);
+            //console.log(userData)
+            //console.log(JSON.stringify(userData).replace(/"/g, ''))
+
+
+            fetchPricingData(userData)
+                .then(result => {
+                    setData(result);
+                    console.log("Result:", data);
+                    setShowUserForm(false);
+                })
+                .catch(err => {
+                    setError('Failed to fetch data. Please try again.');
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+
+        }
+    }, [fetchTrigger]);
+
+
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
+
     function toggleUserForm() {
         setShowUserForm(!showUserForm);
     }
 
-    function handleSave() {
-        const userData = {
-            name,
-            city,
-            email,
-            issueAreas,
-            issueDetails
-        };
-        console.log('User data saved:', userData);
-        setShowUserForm(false);
+    const handleSave = () => {
+        setFetchTrigger(prev => prev + 1);
     }
 
     function handleIssueAreaChange(area) {
         setIssueAreas(prev => ({ ...prev, [area]: !prev[area] }));
     }
+
 
     return (
         <div className="flex flex-col flex-1 overflow-y-scroll no-scrollbar m-10">
@@ -79,8 +150,8 @@ export function UserInput() {
                                     <Button size="2" variant="ghost" onClick={toggleUserForm}>
                                         Cancel
                                     </Button>
-                                    <Button size="2" variant="ghost" onClick={handleSave}>
-                                        Save
+                                    <Button onClick={handleSave} disabled={loading}>
+                                        {loading ? 'Saving...' : 'Save'}
                                     </Button>
                                 </Flex>
                             </Flex>
@@ -103,7 +174,7 @@ export function UserInput() {
                                         <TextField.Root
                                             variant="classic"
                                             value={city}
-                                            onChange={(e) => setcity(e.target.value)}
+                                            onChange={(e) => setCity(e.target.value)}
                                         />
                                     </Text>
                                 </Flex>
@@ -196,15 +267,180 @@ export function UserInput() {
 
                 <Card size="4">
                     <Heading as="h3" size="6" trim="start" mb="2">
-                        Pricing
+                        Program Types
                     </Heading>
 
                     <Text as="p" size="2" mb="5" color="gray">
-                        No credit card required. Every plan includes a 30-day trial of all Pro features.
+                        Explore the different types of programs you may be eligible for.
                     </Text>
 
                     <Grid columns="3" gap="6">
-                        {/* Pricing grid content remains unchanged */}
+                        {/* Rebate Column */}
+                        <Flex direction="column">
+                            <Text weight="bold" size="5" mb="1">
+                                Rebate
+                            </Text>
+                            <Text color="gray" size="2" mb="4">
+                                Get money back after your purchase.
+                            </Text>
+
+                            <Flex direction="column" gap="2">
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Cashback on eligible products</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Lower upfront costs</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Energy-efficient incentives</Text>
+                                </Flex>
+                                {/* Add more features as needed */}
+                                <Button mt="3" variant="outline">
+                                <a href={"https://energyrates.ca/sustainability-incentives-in-canada-tax-credits-rebates-and-more/"} target="_blank" rel="noopener noreferrer">
+                                            Learn More
+                                    </a>
+                                </Button>
+                            </Flex>
+                        </Flex>
+
+                        {/* Financial Incentive Column */}
+                        <Flex direction="column">
+                            <Text weight="bold" size="5" mb="1">
+                                Financial Incentive
+                            </Text>
+                            <Text color="gray" size="2" mb="4">
+                                Benefits to encourage specific actions.
+                            </Text>
+
+                            <Flex direction="column" gap="2">
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Tax credits</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Low-interest loans</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Subsidies</Text>
+                                </Flex>
+                                {/* Add more features as needed */}
+                                <Button mt="3" variant="outline">
+                                <a href={'https://sloanreview.mit.edu/article/economic-incentives-are-key-to-driving-sustainability-at-scale/'} target="_blank" rel="noopener noreferrer">
+                                            Learn More
+                                    </a>
+                                </Button>
+                            </Flex>
+                        </Flex>
+
+                        {/* Grant Column */}
+                        <Flex direction="column">
+                            <Text weight="bold" size="5" mb="1">
+                                Grant
+                            </Text>
+                            <Text color="gray" size="2" mb="4">
+                                Funds provided for specific purposes.
+                            </Text>
+
+                            <Flex direction="column" gap="2">
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">No repayment required</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Support for projects</Text>
+                                </Flex>
+                                <Flex gap="2" align="center">
+                                    <Marker>
+                                        <CheckIcon width="14" height="14" />
+                                    </Marker>
+                                    <Text size="2">Community development</Text>
+                                </Flex>
+                                {/* Add more features as needed */}
+                                <Button mt="3">
+                                    <a href={"https://hellodarwin.com/business-aid/grants-and-funding/environment-climate#:~:text=Eligible%20Projects%20for%20Funding,the%20ecological%20health%20of%20watersheds."} target="_blank" rel="noopener noreferrer">
+                                            Learn More
+                                    </a>
+                                </Button>
+                            </Flex>
+                        </Flex>
+                    </Grid>
+                </Card>
+
+
+                <Card size="4" className="mt-8">
+                    <Heading as="h3" size="6" trim="start" mb="2">
+                        Available Programs
+                    </Heading>
+
+                    <Text as="p" size="2" mb="5" color="gray">
+                        Here are the programs you may be eligible for based on your information.
+                    </Text>
+
+                    <Grid columns="1" gap="6">
+                        {data && data.programs ? (
+                            data.programs.map((program, index) => (
+                                <Flex key={index} direction="column" className="border p-4 rounded-lg">
+                                    <Text weight="bold" size="5" mb="1">
+                                        {program.program_name}
+                                    </Text>
+                                    <Text color="gray" size="2" mb="2">
+                                        {program.organization}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        {program.description}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        <strong>Type:</strong> {program.type_of_program}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        <strong>Sectors:</strong> {program.sectors.join(', ')}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        <strong>Maximum Rebate:</strong> ${program.maximum_rebate}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        <strong>Last Updated:</strong> {program.date_of_update}
+                                    </Text>
+                                    <Text size="2" mb="2">
+                                        <strong>Eligibility Criteria:</strong>
+                                    </Text>
+                                    <ul className="list-disc pl-5">
+                                        {program.eligibility_criteria.map((criteria, i) => (
+                                            <li key={i} className="text-sm">{criteria}</li>
+                                        ))}
+                                    </ul>
+                                    <Button asChild mt="3">
+                                        <a href={program.Link} target="_blank" rel="noopener noreferrer">
+                                            Learn More
+                                        </a>
+                                    </Button>
+                                </Flex>
+                            ))
+                        ) : (
+                            <Text>No program data available. Please fill out the user form to see eligible programs.</Text>
+                        )}
                     </Grid>
                 </Card>
             </div>
